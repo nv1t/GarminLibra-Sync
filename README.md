@@ -13,19 +13,14 @@ This project provides a Python script to synchronize weight data from Garmin Con
 
 - Python 3.6 or higher
 - A Garmin Connect account
-- Libra app API access
-- `.env` file with the following variables:
-  - `EMAIL`: Your Garmin Connect email.
-  - `PASSWORD`: Your Garmin Connect password.
-  - `TOKENSTORE`: Path to store the authentication token.
-  - `AUTH_TOKEN`: Authorization token for the Libra app API.
+- Libra app API access (https://libra-app.eu/api/)
 
 ## Installation
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/nv1t/GarminLibra-Sync
-   cd weight
+   cd GarminLibra-Sync
    ```
 
 2. Set up a `pyenv` virtual environment:
@@ -52,7 +47,7 @@ This project provides a Python script to synchronize weight data from Garmin Con
 
 1. Run the script:
    ```bash
-   python weight.py
+   python sync.py
    ```
 
 2. The script will:
