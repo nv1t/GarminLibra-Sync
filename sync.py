@@ -7,7 +7,7 @@ import sys
 
 import requests
 from dotenv import load_dotenv
-from datetime import datetime, timedelta  # Replace datetime.datetime and datetime.timedelta
+from datetime import datetime, timedelta, timezone  # Add timezone import
 
 from garth.exc import GarthHTTPError
 from garminconnect import (
@@ -68,7 +68,7 @@ def fetch_latest_date():
     try:
         response = requests.get(url % 'latest', headers=headers)
         response.raise_for_status()
-        return datetime.strptime(response.json()['date'], "%Y-%m-%dT%H:%M:%S.%fZ") - timedelta(days=1)
+        return datetime.strptime(response.json()['date'], "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=timezone.utc) - timedelta(days=1)
     except requests.RequestException as e:
         logger.error(f"Error fetching latest date: {e}")
         sys.exit(1)
@@ -76,7 +76,7 @@ def fetch_latest_date():
 def upload_weight_data(weight_data):
     """Upload weight data to the API."""
     for i in weight_data['dateWeightList']:
-        d = datetime.fromtimestamp(i['date'] / 1000).isoformat()
+        d = datetime.fromtimestamp(i['date'] / 1000, tz=timezone.utc).isoformat()  # Ensure UTC timezone
         data = {
             'weight': i['weight'] / 1000,
             'body_fat': (i['bodyFat'] / 100) * (i['weight'] / 1000),
